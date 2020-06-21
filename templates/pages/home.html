@@ -1,10 +1,61 @@
 {% extends 'pages/base.html' %}
 
 {% block title %}
-    {% super %}
 This is fantastic
 {% endblock %}
 
 {% block content %}
 Welcome to TwitClone
+
+    <div id="tweets">
+        Loading...
+    </div>
+
+    <script>
+    const tweetsElement = document.getElementById("tweets") //gets element by ID
+    //tweetsElement.innerHTML = 'Loading...' //set new html in that element
+
+    const xhr = new XMLHttpRequest() //object for retrieving content from server
+    const method = 'GET'
+    const url = "/tweets"
+    const responseType="json"
+
+    function handleDidLike (tweet_id, current_count)
+    {
+        console.log(tweet_id, current_count)
+    }
+    function LikeBtn(tweet)
+    {
+        return "<button class='btn btn-primary btn-small' onclick=handleDidLike(" + tweet.id + "," +  tweet.likes + ")>" + tweet.likes + " Likes</button>"
+    }
+
+    function formatTweetElement(tweet)
+    {
+        //video timestamp 1:29:10 just in case
+        var formattedTweet = "<div class='mb-4 tweet' id=" + tweet.id + "><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
+
+        return formattedTweet
+    }
+
+    xhr.responseType = responseType
+    xhr.open(method, url)  //opens request with method and url
+
+    xhr.onload = function(){
+        console.log(xhr.response)
+        const serverResponse = xhr.response
+        var listedItems = serverResponse.response
+
+        var finalTweetStr = ""
+
+        for (var i=0; i < listedItems.length; i++) {
+            var tweetObj = listedItems[i]
+            var currentItem = formatTweetElement(tweetObj)
+            finalTweetStr += currentItem
+
+        }
+        tweetsElement.innerHTML = finalTweetStr
+    }
+    xhr.send() //triggers request
+
+    </script>
 {% endblock content %}
