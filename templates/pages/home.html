@@ -5,9 +5,14 @@ This is fantastic
 {% endblock %}
 
 {% block content %}
-Welcome to TwitClone
+    <div class='row'>
+    <div class='col text-center'>
+        <h1>Welcome to TwitClone</h1>
+    </div>
+    </div>
 
-    <div id="tweets">
+
+    <div class = "row" id="tweets">
         Loading...
     </div>
 
@@ -32,7 +37,7 @@ Welcome to TwitClone
     function formatTweetElement(tweet)
     {
         //video timestamp 1:29:10 just in case
-        var formattedTweet = "<div class='mb-4 tweet' id=" + tweet.id + "><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
+        var formattedTweet = "<div class='col-12 col-md-10 mx-auto border border rounded py=3 mb-4 tweet' id=" + tweet.id + "><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
 
         return formattedTweet
     }
