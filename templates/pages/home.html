@@ -11,6 +11,17 @@ This is fantastic
     </div>
     </div>
 
+    <div class='row mb-4'>
+        <div class='col-md-4 mx-auto col-10'>
+            <form class='form' method='POST' action='/create_tweet'>
+                {% csrf_token %}
+                <input  type='hidden' value='/' name='next' />
+                <textarea class="form-control" name="content" placeholder="Your tweet..."></textarea>
+                    <button type="submit" class="btn btn-primary mt-3">Tweet</button>
+            </form>
+        </div>
+    </div>
+
 
     <div class = "row" id="tweets">
         Loading...
@@ -37,7 +48,7 @@ This is fantastic
     function formatTweetElement(tweet)
     {
         //video timestamp 1:29:10 just in case
-        var formattedTweet = "<div class='col-12 col-md-10 mx-auto border border rounded py=3 mb-4 tweet' id=" + tweet.id + "><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
+        var formattedTweet = "<div class='col-12 col-md-10 mx-auto border rounded py=3 mb-4 tweet' id=" + tweet.id + "><p>" + tweet.content + "</p><div class='btn-group'>" + LikeBtn(tweet) + "</div></div>"
 
         return formattedTweet
     }
