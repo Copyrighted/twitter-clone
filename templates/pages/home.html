@@ -15,6 +15,7 @@
         <div class='col-md-4 mx-auto col-10'>
             <form class='form' id='tweet-create-form' method='POST' action='/create_tweet'>
                 {% csrf_token %}
+                <div class='d-none alert alert-danger' id="tweet-create-form-error"></div>
                 <input type='hidden' value='/' name='next'/>
                 <textarea required="required" class="form-control" name="content" placeholder="Your tweet..."></textarea>
                 <button type="submit" class="btn btn-primary mt-3">Tweet</button>
@@ -28,6 +29,22 @@
     </div>
 
     <script>
+
+        const handleTweetFormError = function(msg, display)
+        {
+            var myErrorDiv = document.getElementById("tweet-create-form-error")
+
+            if (display === true)
+            {
+                myErrorDiv.setAttribute("class", "alert alert-danger")
+                myErrorDiv.innerText = msg
+            } else
+            {
+                //hide error
+                myErrorDiv.setAttribute("class", "d-none alert alert-danger")
+            }
+        }
+
         const handleTweetCreateFormDidSubmit = function(event)
         {
             event.preventDefault()
@@ -43,6 +60,7 @@
             xhr.onload = function()
             {
                 if (xhr.status === 201){
+                    handleTweetFormError("", false)
                     const newTweet = xhr.response
                     const newTweetElement = formatTweetElement(newTweet)
                     const ogHTML = tweetsContainerElement.innerHTML
@@ -51,7 +69,17 @@
                 } else if (xhr.status === 400)
                 {
                     const errorJson = xhr.response
-                    console.log(errorJson)
+                    const contentError = errorJson.content
+                    let contentErrorMsg;
+                    
+                    if (contentError) {
+                        contentErrorMsg = contentError[0]
+                        if (contentErrorMsg) {
+                            handleTweetFormError(contentErrorMsg, true)
+                        }
+                    } else {
+                        alert("An error occurred.  Please try again.")
+                    }
                 } else if (xhr.status === 500) //server error
                 {
                     alert("There was a server error, please try again.")
@@ -84,7 +112,6 @@
             xhr.open(method, endpoint)  //opens request with method and url
 
             xhr.onload = function () {
-                console.log(xhr.response)
                 const serverResponse = xhr.response
                 var listedItems = serverResponse.response
 
