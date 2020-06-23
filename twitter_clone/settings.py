@@ -25,7 +25,8 @@ SECRET_KEY = 'g+=yo+ty6pq!ck5nh1zevh=)(2wt6ir@io_!d13%-v%^nhexm%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# can also add your domain in this like .TwitClone.com
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
