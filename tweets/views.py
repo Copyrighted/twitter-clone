@@ -29,10 +29,17 @@ def tweet_list_view(request, *args, **kwargs):
     return JsonResponse(data)
 
 def tweet_create_view(request, *args, **kwargs):
+    user = request.user
+    if not request.user.is_authenticated:
+        user = None
+        if request.is_ajax():
+            return JsonResponse({}, status=401)
+        return redirect(settings.LOGIN_URL)
     form = TweetForm(request.POST or None)  #sends data with the post method if theres data being sent
     # next_url=request.POST.get("next") or None
     if form.is_valid():
         obj = form.save(commit=False)
+        obj.user = user
         obj.save()
         if request.is_ajax():
             return JsonResponse(obj.serialize(), status=201) #201 is for created items
