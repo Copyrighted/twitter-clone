@@ -22,6 +22,7 @@ def tweet_list_view_pure_django(request, *args, **kwargs):
     consume by javascript or Swift/Java/iOS/Android
     return json data
     """
+
     qs = Tweet.objects.all()
     tweet_list = [x.serialize() for x in qs]
 
@@ -62,6 +63,20 @@ def tweet_detail_view(request, tweet_id, *args, **kwargs):
         "response": tweet_list
     }
     return Response(serializer.data)
+
+@api_view(['DELETE', 'POST'])
+@permission_classes([IsAuthenticated])
+def tweet_delete_view(request, tweet_id, *args, **kwargs):
+    qs = Tweet.objects.filter(id=tweet_id)
+    if not qs.exists():
+        return Response({}, status=404)
+    qs.filter(user=request.user)
+    if not qs.exists():
+        return Response({"message":"You can't delete this tweet"}, status=401)
+    obj = qs.first()
+    obj.delete()
+    return Response({"message": "Tweet removed"}, status=200)
+
 #
 # def tweet_create_view(request, *args, **kwargs):
 #     '''

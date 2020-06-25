@@ -16,7 +16,7 @@
         - Image
      - Delete
      - Retweeting
-     - Liking
+     - Liking or unliking
 
 3. Following / Followers
 

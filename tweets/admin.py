@@ -1,14 +1,15 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Tweet
+from .models import Tweet, TweetLike
+
+class TweetLikeAdmin(admin.TabularInline):
+    model = TweetLike
 
 class TweetAdmin(admin.ModelAdmin):
+    inLines = [TweetLikeAdmin]
     list_display = ['__str__', 'user']
-    search_fields = ['user__username', 'user__email']
-
-    # def __str__(self):
-    #     return self.content #can display content for tweets
+    search_fields = ['content','user__username', 'user__email']
 
     class Meta:
         model = Tweet
