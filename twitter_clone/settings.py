@@ -27,7 +27,9 @@ DEBUG = True
 
 # can also add your domain in this like .TwitClone.com
 ALLOWED_HOSTS = ['127.0.0.1']
+LOGIN_URL="/login"
 
+MAX_TWEET_LENGTH = 240
 
 # Application definition
 
@@ -38,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #third party
+    'rest_framework',
+    #internal
     'tweets',
 ]
 
@@ -101,6 +106,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication'
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        #'rest_framework.renderers.BrowsableAPIRender',
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

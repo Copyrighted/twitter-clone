@@ -80,9 +80,10 @@
                     } else {
                         alert("An error occurred.  Please try again.")
                     }
-                } else if (xhr.status === 500) //server error
+                } else if (xhr.status === 401 || xhr.status === 403) //server error
                 {
-                    alert("There was a server error, please try again.")
+                    alert("You must login!")
+                    window.location.href= "/login"
                 }
 
             }
@@ -99,9 +100,6 @@
         tweetCreateFormEl.addEventListener("submit", handleTweetCreateFormDidSubmit)
 
         const tweetsContainerElement = document.getElementById("tweets") //gets element by ID
-        //tweetsElement.innerHTML = 'Loading...' //set new html in that element
-
-
 
         const loadTweets = function (tweetsElement) {
             const xhr = new XMLHttpRequest() //object for retrieving content from server
@@ -113,7 +111,7 @@
 
             xhr.onload = function () {
                 const serverResponse = xhr.response
-                var listedItems = serverResponse.response
+                var listedItems = serverResponse
 
                 var finalTweetStr = ""
 
